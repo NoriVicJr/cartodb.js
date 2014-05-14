@@ -27,5 +27,9 @@
       "underscore": ""
     },
     "files": ["dist"],
-    "main": "cartodb.js"
+    "main": "cartodb.js",
+
+    "scripts": {
+      "test": "phantomjs spec/libs/phantomjs/run-jasmine.js test/specRunner.html"
+    }
 }
