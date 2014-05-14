@@ -30,6 +30,6 @@
     "main": "cartodb.js",
 
     "scripts": {
-      "test": "phantomjs spec/libs/phantomjs/run-jasmine.js test/specRunner.html"
+      "test": "phantomjs test/lib/phantomjs/run-jasmine.js test/SpecRunner.html"
     }
 }
