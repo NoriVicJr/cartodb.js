@@ -11,11 +11,12 @@ describe("common.ui.Notification", function() {
   });
 
   it("open should show the element", function() {
-    runs(function () {
-      expect(notification.$el.css('display')).toEqual('none');
-      notification.open();
+    expect(notification.$el.css('display')).toEqual('none');
+    notification.open();
+
+    waitsFor(function(){
+      return notification.$el.css('display') !== 'none';
     });
-    waits(500);
     runs(function () {
       expect(notification.$el.css('display')).toEqual('block');
     });
@@ -30,7 +31,9 @@ describe("common.ui.Notification", function() {
       });
       notification.open();
     });
-    waits(500);
+    waitsFor(function(){
+      return notification.$el.css('display') === 'none';
+    });
     runs(function () {
       expect(notification.$el.css('display')).toEqual('none');
     });
