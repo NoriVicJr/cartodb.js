@@ -149,10 +149,10 @@ requirejs([
 
   // Vis specs
   // '../spec/vis/layers.spec',
-  // '../spec/vis/vis.spec',
+  '../spec/vis/vis.spec',
 
   // API 
-  '../spec/api/layers.spec',
+  // '../spec/api/layers.spec',
   '../spec/api/layers/cartodb.spec',
   '../spec/api/sql.spec'
 ],

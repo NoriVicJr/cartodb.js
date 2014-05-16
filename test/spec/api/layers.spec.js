@@ -216,56 +216,56 @@ describe('api.layers', function() {
         });
       });
 
-      it("should load vis.json without infowindows", function() {
-        var layer;
-        var s = sinon.spy();
-        var called = false;
+      // it("should load vis.json without infowindows", function() {
+      //   var layer;
+      //   var s = sinon.spy();
+      //   var called = false;
 
-        cartodb.createLayer(map, {
-          updated_at: 'jaja',
-          layers: [
-            null,
-            {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: { fields: [], template: '' } }
-          ]
-        }, s).done(function(lyr) {
-          layer = lyr;
-          called = true;
-        });
+      //   cartodb.createLayer(map, {
+      //     updated_at: 'jaja',
+      //     layers: [
+      //       null,
+      //       {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: { fields: [], template: '' } }
+      //     ]
+      //   }, s).done(function(lyr) {
+      //     layer = lyr;
+      //     called = true;
+      //   });
 
-        waitsFor(function() {return s.called }, "Time out", 500);
+      //   waitsFor(function() {return s.called }, "Time out", 500);
 
-        runs(function() {
-          expect(s.called).toEqual(true);
-        });
+      //   runs(function() {
+      //     expect(s.called).toEqual(true);
+      //   });
 
-      });
+      // });
 
-      it("should load specified layer", function() {
-        var layer;
-        var s = sinon.spy();
-        var called = false;
+      // it("should load specified layer", function() {
+      //   var layer;
+      //   var s = sinon.spy();
+      //   var called = false;
 
-        cartodb.createLayer(map, {
-          updated_at: 'jaja',
-          layers: [
-            null,
-            {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: null },
-            {kind: 'torque', options: { user_name: 'test', table_name: 'test', tile_style: '#test { marker-width: 10; }'}, infowindow: null }
-          ]
-        }, { layerIndex: 2 }, s).done(function(lyr) {
-          layer = lyr;
-          called = true;
-        });
+      //   cartodb.createLayer(map, {
+      //     updated_at: 'jaja',
+      //     layers: [
+      //       null,
+      //       {kind: 'cartodb', options: { user_name: 'test', table_name: 'test', tile_style: 'test'}, infowindow: null },
+      //       {kind: 'torque', options: { user_name: 'test', table_name: 'test', tile_style: '#test { marker-width: 10; }'}, infowindow: null }
+      //     ]
+      //   }, { layerIndex: 2 }, s).done(function(lyr) {
+      //     layer = lyr;
+      //     called = true;
+      //   });
 
-        waitsFor(function() { return called }, "Time out", 400);
+      //   waitsFor(function() { return called }, "Time out", 400);
 
-        runs(function() {
-          expect(s.called).toEqual(true);
-          // check it's a torque layer and not a cartodb one
-          expect(layer.model.get('type')).toEqual('torque');
-        });
+      //   runs(function() {
+      //     expect(s.called).toEqual(true);
+      //     // check it's a torque layer and not a cartodb one
+      //     expect(layer.model.get('type')).toEqual('torque');
+      //   });
 
-      });
+      // });
 
       // it("should add cartodb logo with torque layer although it is not defined", function() {
       //   var layer;
