@@ -133,18 +133,13 @@ describe("Vis", function() {
   it("should not invalidate map if map height is 0", function() {
     var container = $('<div>').css('height', '0');
     var vis = new cdb.vis.Vis({el: container});
+    var done = false;
     this.mapConfig.map_provider = "googlemaps";
 
-    vis.load(this.mapConfig);
+    vis.load(this.mapConfig);  
+    spyOn(vis.mapView, 'invalidateSize');
+    expect(vis.mapView.invalidateSize).not.toHaveBeenCalled();
 
-    waitsFor(function() {
-      return vis.mapView;
-    }, "MapView element never created :(", 100000);
-
-    runs(function () {
-      spyOn(vis.mapView, 'invalidateSize');
-      expect(vis.mapView.invalidateSize).not.toHaveBeenCalled();
-    });
   });
 
   it("should bind resize changes when map height is 0", function() {
@@ -203,7 +198,9 @@ describe("Vis", function() {
   })
 
   it("load should call done", function() {
-    var called = false;
+    var done = false;
+    var layers;
+
     this.mapConfig.layers = [{
       kind: 'tiled',
       options: {
@@ -211,15 +208,22 @@ describe("Vis", function() {
       }
     }]
     layers = null;
+
     runs(function() {
       this.vis.load(this.mapConfig, { }).done(function(vis, lys){
-        called = true;
         layers = lys;
+        done = true;
       });
-    })
+
+      setTimeout(function() { 
+        done = true;
+      },100)
+    });
+
     waitsFor(function() {
-      return called
-    }, "Time out", 1000);
+      return done
+    }, "Time out", 10000);
+
     runs(function() {
       expect(layers.length).toEqual(1);
     });
@@ -272,25 +276,35 @@ describe("Vis", function() {
     expect(this.vis.getOverlays().length).toEqual(0);
   });
 
-  // it ("should load modules", function() {
-  //   var self = this;
-  //   this.mapConfig.layers = [
-  //     {kind: 'torque', options: { tile_style: 'test', user_name: 'test', table_name: 'test'}}
-  //   ];
-  //   runs(function() {
-  //     self.vis.load(this.mapConfig);
-  //   })
-  //   waits(20);
-  //   runs(function() {
-  //     var scripts = document.getElementsByTagName('script'),
-  //         torqueRe = /\/cartodb\.mod\.torque\.js/;
-  //     var found = false;
-  //     for (i = 0, len = scripts.length; i < len && !found; i++) {
-  //       src = scripts[i].src;
-  //       found = !!src.match(torqueRe);
-  //     }
-  //     expect(found).toEqual(true);
-  //   });
-  // });
+  it ("should load modules", function() {
+    var self = this;
+    var done = false;
+
+    this.mapConfig.layers = [
+      { kind: 'torque', options: { tile_style: 'test', user_name: 'test', table_name: 'test'} }
+    ];
+    runs(function() {
+      self.vis.load(this.mapConfig);
+
+      setTimeout(function() { 
+        done = true;
+      },20)
+    })
+
+    waitsFor(function() { 
+      return done; 
+    }, "Time out", 100);
+
+    runs(function() {
+      var scripts = document.getElementsByTagName('script'),
+          torqueRe = /\/cartodb\.mod\.torque\.js/;
+      var found = false;
+      for (i = 0, len = scripts.length; i < len && !found; i++) {
+        src = scripts[i].src;
+        found = !!src.match(torqueRe);
+      }
+      expect(found).toEqual(true);
+    });
+  });
 
 });
