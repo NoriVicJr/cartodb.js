@@ -31,11 +31,13 @@ describe('Opacity interaction', function() {
     });
     map.overlayMapTypes.setAt(0, cdb_layer);
 
+    // Trick!!!
+    var ready = false
+    setTimeout(function() { ready = true }, 500)
+    waitsFor(function () { return ready } , 'Time out', 700);
   });
 
   xit('Layer opacity should be 0.8', function() {
-
-    waits(500);
 
     runs(function () {
       var $layer = $(div).find("img[gtilekey]").first()
@@ -48,16 +50,17 @@ describe('Opacity interaction', function() {
 
 
   xit('Opacity shouldn\'t change if it is not visible', function() {
-    
-    waits(500);
-
+  
     runs(function() {
       cdb_layer.hide();
       cdb_layer.setOpacity(0.3);
       map.overlayMapTypes.setAt(0, cdb_layer);
     });
 
-    waits(500);
+    // Trick!!!
+    var ready = false
+    setTimeout(function() { ready = true }, 500)
+    waitsFor(function () { return ready } , 'Time out', 700);
 
     runs(function () {
       var $layer = $(div).find("img[gtilekey]").first()

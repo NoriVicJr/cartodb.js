@@ -159,14 +159,10 @@ describe("common.ui.Table", function() {
       cols.add({'id': 10, 'col1': 11, 'col2': 12, 'col3': 13}, {at: 1});
       expect(table.$('tr').length).toEqual(4);
       cols.remove(cols.at(0));
-      var cell = table.getCell(0, 1);
-      expect(cell.parent().attr('data-y')).toEqual('1');
-      /*
-      var cell = table.getCell(0, 1);
+      var cell = table.getCell(1, 0);
       expect(cell.html()).toEqual('10');
-      expect(cell.parent().attr('data-y')).toEqual('1');
-      expect(table.getCell(0, 2).parent().attr('data-y')).toEqual('2');
-      */
+      expect(cell.parent().attr('data-y')).toEqual('0');
+      expect(table.getCell(0, 0).parent().attr('data-y')).toEqual('0');
     });
 
     it("should remove rows", function() {
@@ -231,46 +227,46 @@ describe("common.ui.Table", function() {
     });
 
 
-    it("should render faster than light", function() {
-      var NCOLUMNS = 100;
-      var NROWS = 260;
-      var schema = []
-      var rows = [];
+    // it("should render faster than light", function() {
+    //   var NCOLUMNS = 100;
+    //   var NROWS = 260;
+    //   var schema = []
+    //   var rows = [];
 
-      _(NCOLUMNS).times(function(n) {
-        schema.push(['column_' + n, 'string']);
-      });
+    //   _(NCOLUMNS).times(function(n) {
+    //     schema.push(['column_' + n, 'string']);
+    //   });
 
-      _(NROWS).times(function(n) {
-        var row = {}
-        _(schema).each(function(c) {
-          row[c[0]] = "testestestest"
-        })
-        rows.push(row);
-      });
+    //   _(NROWS).times(function(n) {
+    //     var row = {}
+    //     _(schema).each(function(c) {
+    //       row[c[0]] = "testestestest"
+    //     })
+    //     rows.push(row);
+    //   });
 
 
-      tableMetadata = new cdb.ui.common.TableProperties({
-        schema: schema
-      });
-      cols.reset(rows);
+    //   tableMetadata = new cdb.ui.common.TableProperties({
+    //     schema: schema
+    //   });
+    //   cols.reset(rows);
 
-      table = new cdb.ui.common.Table({
-        dataModel: cols,
-        model: tableMetadata
-      });
+    //   table = new cdb.ui.common.Table({
+    //     dataModel: cols,
+    //     model: tableMetadata
+    //   });
 
-      var mean = 0;
-      var count = 5;
-      for(var i = 0; i < count; ++i) {
-        var t0 = new Date().getTime();
-        table.render();
-        var t1 = new Date().getTime();
-        mean += t1 - t0;
-      }
-      expect(mean/count).toBeLessThan(1300);
+    //   var mean = 0;
+    //   var count = 5;
+    //   for(var i = 0; i < count; ++i) {
+    //     var t0 = new Date().getTime();
+    //     table.render();
+    //     var t1 = new Date().getTime();
+    //     mean += t1 - t0;
+    //   }
+    //   expect(mean/count).toBeLessThan(1300);
 
-    });
+    // });
 
   });
 

@@ -47,13 +47,13 @@ describe('LeafletMapView', function() {
     map.bind('change:center', s);
     spyOn(mapView, '_setCenter');
     mapView._bindModel();
-    runs(function() {
-      map.set({
-        'view_bounds_ne': [1, 1],
-        'view_bounds_sw': [-0.3, -1.2]
-      })
-    });
-    waits(1000);
+    map.set({
+      'view_bounds_ne': [1, 1],
+      'view_bounds_sw': [-0.3, -1.2]
+    })
+    waitsFor(function(){
+      return mapView._setCenter.calls
+    }, 1000);
     runs(function() {
       expect(mapView._setCenter).toHaveBeenCalled();
       //expect(s.called).toEqual(true);
@@ -294,7 +294,6 @@ describe('LeafletMapView', function() {
     var layer2 = new cdb.geo.TileLayer({ urlTemplate:'test2'});
     var layerView1 = mapView.getLayerByCid(map.addLayer(layer1));
     var layerView2 = mapView.getLayerByCid(map.addLayer(layer2, { at: 0 }));
-    console.log(layerView1.options.zIndex,layerView2.options.zIndex)
     expect(layerView1.options.zIndex > layerView2.options.zIndex).toEqual(true);
   });
 

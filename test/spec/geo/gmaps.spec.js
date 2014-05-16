@@ -46,17 +46,20 @@
       map.bind('change:center', s);
       spyOn(mapView, '_setCenter');
       mapView._bindModel();
-      runs(function() {
+      // runs(function() {
         map.set({
           'view_bounds_ne': [1, 1],
           'view_bounds_sw': [-0.3, -1.2]
         })
-      });
-      waits(1000);
-      runs(function() {
+      // });
+      // waits(1000);
+      // waitsFor(function() {
+      //   return mapView._setCenter.calls
+      // });
+      // runs(function() {
         expect(mapView._setCenter).toHaveBeenCalled();
         //expect(s.called).toEqual(true);
-      });
+      // });
     });
 
     it("should allow to disable the scroll wheel", function() {
@@ -151,15 +154,11 @@
     });
 
     it("should create a cartodb logo when layer is cartodb", function() {
-      runs(function() {
-        layer = new cdb.geo.CartoDBLayer({ table_name: "INVENTADO", tile_style: 'test', user_name: 'test'});
-        var lyr = map.addLayer(layer);
-        var layerView = mapView.getLayerByCid(lyr);
-      });
-      waits(2000);
-      runs(function() {
-        expect(container.find("div.cartodb-logo").length).toEqual(1);
-      });
+      spyOn(cdb.geo.common.CartoDBLogo, 'addWadus');
+      layer = new cdb.geo.CartoDBLayer({ table_name: "INVENTADO", tile_style: 'test', user_name: 'test'});
+      var lyr = map.addLayer(layer);
+      var layerView = mapView.getLayerByCid(lyr);  
+      expect(cdb.geo.common.CartoDBLogo.addWadus).toHaveBeenCalled();
     });
 
     it("should create a PlaiLayer when the layer is cartodb", function() {

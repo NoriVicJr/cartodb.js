@@ -35,8 +35,6 @@ describe('Show funcionality', function() {
 
   it('If layer is visible, show shouldn\'t do anything', function() {
 
-    waits(500);
-
     runs(function () {
       expect(cdb_layer.show).toThrow();
       var opacity = cdb_layer.options.opacity;
@@ -46,8 +44,6 @@ describe('Show funcionality', function() {
 
   it('Shows layer after hide it', function() {
 
-    waits(500);
-
     runs(function () {
       cdb_layer.hide();
       cdb_layer.show();
@@ -56,8 +52,6 @@ describe('Show funcionality', function() {
   });
 
   it('If hides layer and set an opacity greater than 0, layer shouln\'t be visible', function() {
-
-    waits(500);
 
     runs(function () {
       cdb_layer.hide();

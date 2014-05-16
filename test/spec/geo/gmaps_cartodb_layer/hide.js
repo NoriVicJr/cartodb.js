@@ -36,33 +36,33 @@ describe('Hide funcionality', function() {
 
 
   it('if hides layers should work', function() {
-
-    waits(500);
-
+    // Trick!!!
+    runs(function() {
+      var ready = false;
+      setTimeout(function() { ready = true }, 400)
+      waitsFor(function () { return ready } , 'Time out', 500);
+    })
+    
     runs(function () {
       cdb_layer.hide();
     });
 
-    waits(500);
-
     runs(function() {
-      var $tile = $(div).find("img[gtilekey]").first()
-        , opacity = cdb_layer.options.opacity
-        , before_opacity = cdb_layer.options.previous_opacity;
+      var $tile = $(div).find("img[gtilekey]").first();
+      var opacity = cdb_layer.options.opacity
+      var before_opacity = cdb_layer.options.previous_opacity;
 
       expect(cdb_layer.visible).toBeFalsy();
-      expect($tile.css("opacity")).toEqual('0');
+      expect($tile.attr('style').indexOf('opacity: 0')).not.toEqual(-1);
       expect(opacity).toEqual(0);
       expect(before_opacity).not.toEqual(0);
     });
   });
 
   it('If sets opacity to 0, layer should be visible', function() {
-    waits(500);
-
-    runs(function () {
+    runs(function() {
       cdb_layer.setOpacity(0);
-      expect(cdb_layer.options.visible).toBeTruthy();
-    });
+      expect(cdb_layer.options.visible).toBeTruthy();  
+    })
   });
 });

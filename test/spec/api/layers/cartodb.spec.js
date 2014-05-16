@@ -43,12 +43,16 @@ describe('api.layers.cartodb', function() {
         'setOptions'
       ];
 
+      var called = false;
       runs(function() {
         cartodb.createLayer(map, { kind: 'cartodb', options: { table_name:'test', tile_style: 'test', user_name: 'test'} }, function(l) {
           layer = l;
+          called = true;
         });
       });
-      waits(100);
+      waitsFor(function() {
+        return called
+      }, "Time out", 300);
       runs(function() {
         _.each(methods, function(m) {
           expect(layer[m]).not.toEqual(undefined);
@@ -72,6 +76,7 @@ describe('api.layers.cartodb', function() {
       //cdb.templates.add(new cdb.core.Template({
         //name: 'test',
       //}));
+      var called = false;
       runs(function() {
         cartodb.createLayer(map, { 
             kind: 'cartodb', 
@@ -87,9 +92,12 @@ describe('api.layers.cartodb', function() {
         }, function(l) {
           addFn(map, l);
           layer = l;
+          called = true;
         });
       });
-      waits(100);
+      waitsFor(function(){
+        return called
+      }, "Time out", 200);
       runs(function() {
         expect(layer.infowindow).not.toEqual(undefined);
         expect(layer.infowindow.get('fields').length).toEqual(1);
@@ -99,6 +107,7 @@ describe('api.layers.cartodb', function() {
     });
 
     it("should add interactivity if there is infowindow", function() {
+      var called = false;
       runs(function() {
         cartodb.createLayer(map, { 
             kind: 'cartodb', 
@@ -116,9 +125,12 @@ describe('api.layers.cartodb', function() {
         }, function(l) {
           addFn(map, l);
           layer = l;
+          called = true;
         });
       });
-      waits(100);
+      waitsFor(function(){
+        return called
+      }, "Time out", 200);
       runs(function() {
         expect(layer.infowindow).not.toEqual(undefined);
         expect(layer.options.interactivity).toEqual('myname,jaja,cartodb_id');
@@ -126,6 +138,7 @@ describe('api.layers.cartodb', function() {
     });
 
     it("should not add interactivity when interaction is false", function() {
+      var called = false;
       runs(function() {
         cartodb.createLayer(map, { 
             kind: 'cartodb', 
@@ -144,9 +157,12 @@ describe('api.layers.cartodb', function() {
         }, function(l) {
           addFn(map, l);
           layer = l;
+          called = true;
         });
       });
-      waits(100);
+      waitsFor(function(){
+        return called
+      }, "Time out", 200);
       runs(function() {
         expect(layer.infowindow).not.toEqual(undefined);
         expect(layer.options.interactivity).toEqual('myname,jaja,cartodb_id');
